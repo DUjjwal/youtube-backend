@@ -10,8 +10,8 @@
 <body>
     <h1>Sign Up Form</h1>
     <div class="main">
-        <form action="http://localhost:4000/user/signup" method="post">
-            <label for="firstname" name="firstName">First Name: </label><br>
+        <form action="http://localhost:4000/user/signup" method="post" enctype="multipart/form-data">
+           <label for="firstname" name="firstName">First Name: </label><br>
             <input type="text" name="firstName" required>
             <label for="lastname" name="lastName">Last Name: </label><br>
             <input type="text" name="lastName" required>
@@ -19,7 +19,10 @@
             <input type="text" name="email" required>
             <label for="password" name="password">Password: </label><br>
             <input type="text" name="password" required>
-            <button type="submit">Submit</button>
+            <label for="photos" name="photos">Files: </label><br>
+            <input type="file" name="photos" required>
+            
+            <button type="file">Submit</button>
         </form>
     </div>
     
