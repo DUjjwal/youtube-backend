@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoUpload</title>
+    <link rel="stylesheet" href="./video.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <h1>Video Upload</h1>
+    <div class="main">
+        <form action="http://localhost:4000/video/upload" method="post" enctype="multipart/form-data">
+           <label for="title" name="title">Title: </label><br>
+            <input type="text" name="title" required>
+            <label for="description" name="description">Description: </label><br>
+            <input type="text" name="description" required>
+            <label for="photos" name="photos">Thumbnail: </label><br>
+            <input type="file" name="photos" required>
+            
+            <button type="file">Submit</button>
+        </form>
+    </div>
+    
+</body>
+</html>

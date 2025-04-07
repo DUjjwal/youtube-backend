@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv/config"
 import morgan from "morgan"
 import router from "./routes/user.js"
+import videoRouter from "./routes/video.js"
 import connectDB from "./config/database.js"
 import cookieParser from "cookie-parser"
 import cloudinary from "cloudinary"
@@ -29,6 +30,7 @@ app.use(morgan('tiny'))
 app.use(express.urlencoded({extended: true}))
 
 app.use("/user", router)
+app.use("/video", videoRouter)
 
 
 app.get("/", (req, res) => {
