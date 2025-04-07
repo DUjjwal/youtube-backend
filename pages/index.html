@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <h1>Sign Up Form</h1>
+    <div class="main">
+        <form action="http://localhost:4000/user/signup" method="post">
+            <label for="firstname" name="firstName">First Name: </label><br>
+            <input type="text" name="firstName" required>
+            <label for="lastname" name="lastName">Last Name: </label><br>
+            <input type="text" name="lastName" required>
+            <label for="email" name="email">Email: </label><br>
+            <input type="text" name="email" required>
+            <label for="password" name="password">Password: </label><br>
+            <input type="text" name="password" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    
+</body>
+</html>
