@@ -27,6 +27,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter password"]
     },
+    followers: {
+        type: Number,
+        default: 0
+    },
+    myComments: [
+        {
+            commentId: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'Comment'
+            }
+        }
+    ],
     profilePhoto: {
         id: {
             type: String
@@ -65,7 +77,7 @@ const userSchema = new mongoose.Schema({
         {
             userId: {
                 type: mongoose.Schema.ObjectId,
-                red: 'User'
+                ref: 'User'
             }
         }
     ]

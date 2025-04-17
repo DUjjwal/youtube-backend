@@ -53,8 +53,7 @@ export const signUp = BigPromise(async (req, res, next) => {
     // user.password = undefined
 
     // res.cookie('token', token, options).redirect("/user/home")
-
-    
+  
 })
 
 export const login = BigPromise(async (req, res, next) => {
@@ -89,10 +88,31 @@ export const login = BigPromise(async (req, res, next) => {
     // user.password = undefined
 
     // res.cookie('token', token, options).redirect("/user/home")
-
-
-
 })
+
+export const follow = BigPromise(async (req, res, next) => {
+    //req.params.user user to which req.user is following
+    const user = await User.findById(req.params.user)
+    const user2 = await User.findById(req.user.id)
+
+    if(!user || !user2) {
+        return next(new CustomError("no such user exists", 400))
+    }
+
+    user2.following.push({
+        userId: user.id
+    })
+    
+    user.followers += 1
+    
+    await user.save({validateBeforeSave: false})
+    await user2.save({validateBeforeSave: false})
+
+    res.status(200).json({
+        success: true
+    })
+})
+
 export const homeRoute = BigPromise((req, res, next) => {
     res.render("home")
 })

@@ -23,17 +23,6 @@ const videoSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "User"
     },
-    comments: [
-        {
-            user: {
-                type: mongoose.Schema.ObjectId,
-                ref: "User"
-            },
-            text: {
-                type: String
-            }
-        }
-    ],
     tags: {
         type: String,
         enum: {

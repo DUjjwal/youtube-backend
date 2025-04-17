@@ -2,6 +2,10 @@ import BigPromise from "../middlewares/bigPromise.js"
 import CustomError from "../utils/customError.js"
 import { User } from "../models/user.js"
 import { Video } from "../models/video.js"
+import { Comment } from "../models/comment.js"
+
+//also update the user model for these routes
+//history, 
 
 export const upload = BigPromise(async (req, res, next) => {
     
@@ -11,11 +15,22 @@ export const upload = BigPromise(async (req, res, next) => {
         return next(new CustomError("provide title and descrition", 400))
     }
 
+    const user = await User.findById(req.user.id)
+
+    if(!user) {
+        return next(new CustomError("user not found", 400))
+    }
     const video = await Video.create({
         title,
         description,
         owner: req.user._id
     })
+
+    user.uploadedVideos.push({
+        videoId: video.id
+    })
+
+    await user.save({validateBeforeSave: false})
 
     res.status(200).json({
         success: true,
@@ -26,14 +41,24 @@ export const upload = BigPromise(async (req, res, next) => {
 
 export const like = BigPromise(async (req, res, next) => {
     const video = await Video.findById(req.params.video)
+    const user = await User.findById(req.user.id)
 
     if(!video) {
         return next(new CustomError("video not found", 400))
     }
 
+    if(!user) {
+        return next(new CustomError("user not found", 400))
+    }
+
+    user.likedVideos.push({
+        videoId: req.params.video
+    })
+
     video.likes = video.likes + 1
     
     await video.save({validateBeforeSave: false})
+    await user.save({validateBeforeSave: false})
 
     res.status(200).json({
         success: true,
@@ -58,6 +83,8 @@ export const dislike = BigPromise(async (req, res, next) => {
     })
 })
 
+
+
 export const getAllVideo = BigPromise(async (req, res, next) => {
     const video = await Video.find()
 
@@ -75,22 +102,22 @@ export const comment = BigPromise(async (req, res, next) => {
         return next(new CustomError("please provide comment text", 400))
     }
 
-    const video = await Video.findById(req.params.video)
-
-    if(!video) {
-        return next(new CustomError("video not found", 400))
-    }
-
-    video.comments.push({
-        user: req.user._id,
-        text
+    const comment = await Comment.create({
+        text,
+        user: req.user.id,
+        video: req.params.video
     })
 
-    await video.save({validateBeforeSave: false})
+    const user = await User.findById(req.user.id)
 
+    user.myComments.push({
+        commentId: comment.id
+    })
+
+    await user.save({validateBeforeSave: false}) 
+    
     res.status(200).json({
-        success: true,
-        video
+        success: true
     })
 })
 
@@ -133,5 +160,33 @@ export const deleteVideo = BigPromise(async (req, res, next) => {
     })
 })
 
+export const getComments = BigPromise(async (req, res, next) => {
+    const comments = await Comment.find({video: req.params.video})
 
+    res.status(200).json({
+        success: true,
+        comments
+    })
+})
 
+export const history = BigPromise(async (req, res, next) => {
+
+    const video = await Video.findById(req.params.video)
+
+    if(!video) {
+        return next(new CustomError("video not found", 400))
+    }
+
+    const user = req.user
+
+    user.history.push({
+        videoId: video.id
+    })
+
+    await user.save({validateBeforeSave: false})
+
+    res.status(200).json({
+        status: true,
+        video
+    })
+})
